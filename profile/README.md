@@ -40,22 +40,130 @@ Transform small and medium cannabis producers in Europe through intelligent data
 
 ## 🏗️ Technical Architecture
 
+Our enterprise-grade architecture is designed for scalability, security, and regulatory compliance in the cannabis industry.
+
+### System Overview
+
+```mermaid
+graph TB
+    subgraph "Edge Layer"
+        A[IoT Sensors] --> B[Raspberry Pi Gateway]
+        B --> C[Local Buffer Storage]
+    end
+    
+    subgraph "Security Gateway"
+        D[VPN Tunnel]
+        E[Certificate Auth]
+        F[Rate Limiting]
+    end
+    
+    subgraph "Cloud Infrastructure - AWS Frankfurt"
+        G[Application Load Balancer]
+        H[API Gateway]
+        
+        subgraph "Application Services"
+            I[Authentication Service]
+            J[Data Ingestion API]
+            K[Analytics API]
+            L[Compliance API]
+        end
+        
+        subgraph "Data Layer"
+            M[(PostgreSQL - Metadata)]
+            N[(InfluxDB - Time Series)]
+            O[(Redis - Cache)]
+            P[S3 - File Storage]
+        end
+        
+        subgraph "ML/Analytics"
+            Q[ML Training Pipeline]
+            R[Model Inference API]
+            S[Computer Vision Service]
+        end
+        
+        subgraph "Frontend"
+            T[React Dashboard]
+            U[Mobile PWA]
+        end
+    end
+    
+    subgraph "Monitoring & Compliance"
+        V[Prometheus Metrics]
+        W[Grafana Dashboards]
+        X[Compliance Reports]
+        Y[Audit Logs]
+    end
+    
+    A --> B
+    C --> D
+    D --> G
+    G --> H
+    H --> I
+    H --> J
+    J --> M
+    J --> N
+    K --> O
+    L --> P
+    M --> Q
+    N --> R
+    R --> S
+    I --> T
+    K --> T
+    T --> U
+    
+    J --> V
+    V --> W
+    L --> X
+    I --> Y
 ```
-┌─────────────────┐    ┌──────────────┐    ┌─────────────────┐
-│   IoT Sensors   │───▶│     MQTT     │───▶│   Data Pipeline │
-└─────────────────┘    │   Broker     │    │   (Python)      │
-                       └──────────────┘    └─────────────────┘
-                                                     │
-┌─────────────────┐    ┌──────────────┐    ┌─────────────────┐
-│   React App     │◀───│  REST API    │◀───│   PostgreSQL    │
-│  (Dashboard)    │    │ (Node.js)    │    │   InfluxDB      │
-└─────────────────┘    └──────────────┘    └─────────────────┘
-                                                     │
-                                            ┌─────────────────┐
-                                            │  ML Pipeline    │
-                                            │ (scikit-learn)  │
-                                            └─────────────────┘
-```
+
+### Architecture Layers
+
+#### 1. **Edge Computing Layer**
+- **Raspberry Pi Gateways**: Local data processing and buffering
+- **Sensor Network**: Environmental monitoring with redundancy
+- **Offline Capability**: 72-hour local data storage during connectivity issues
+- **OTA Updates**: Secure firmware updates with rollback capability
+
+#### 2. **Security & Networking**
+- **VPN Tunneling**: Site-to-site encrypted connections
+- **mTLS Authentication**: Mutual certificate-based device authentication
+- **API Security**: OAuth 2.0 + JWT with refresh token rotation
+- **Network Segmentation**: Isolated environments for different clients
+
+#### 3. **Cloud Infrastructure (AWS Frankfurt)**
+- **Auto-Scaling**: Elastic compute based on demand
+- **High Availability**: Multi-AZ deployment with 99.9% SLA
+- **Disaster Recovery**: Automated backups with 4-hour RTO
+- **GDPR Compliance**: EU data residency and privacy controls
+
+#### 4. **Data Architecture**
+- **Stream Processing**: Real-time data ingestion with Apache Kafka
+- **Time-Series Optimization**: InfluxDB for sensor data with 1-second resolution
+- **Metadata Management**: PostgreSQL for configuration and user data
+- **Caching Strategy**: Redis for sub-100ms response times
+
+#### 5. **Machine Learning Pipeline**
+- **Model Training**: Automated retraining with new data
+- **A/B Testing**: Model version comparison and gradual rollout
+- **Feature Store**: Centralized feature management for ML models
+- **Model Monitoring**: Performance drift detection and alerts
+
+### Data Flow Architecture
+
+1. **Collection**: Sensors → Pi Gateway → Local Buffer
+2. **Transmission**: Encrypted upload → API Gateway → Validation
+3. **Storage**: Time-series DB + Metadata DB + File Storage
+4. **Processing**: ML Pipeline → Model Inference → Predictions
+5. **Delivery**: REST API → Dashboard → Mobile App
+6. **Compliance**: Audit logs → Regulatory reports → Secure archive
+
+### Security Implementation
+
+- **Encryption**: AES-256 at rest, TLS 1.3 in transit
+- **Access Control**: RBAC with principle of least privilege
+- **Compliance**: SOC 2 Type II, GDPR Article 32 technical measures
+- **Monitoring**: 24/7 security event correlation and response
 
 ## 🛠️ Tech Stack
 
@@ -179,11 +287,13 @@ Transform small and medium cannabis producers in Europe through intelligent data
 - **Technical Depth**: ML/AI expertise with security background
 - **Cost Efficiency**: Brazilian development costs, European pricing
 
+## 🚀 Getting Started
 
 ### For Cannabis Producers
 Interested in optimizing your cultivation with smart analytics?
 
 📧 **Contact**: davidgomes@tuta.io 
+
 
 ## 📝 License
 
